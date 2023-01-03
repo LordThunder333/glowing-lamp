@@ -135,11 +135,12 @@ function cf_sampler(N::Int64)
     end
     time2 = time_ns()
     delta = 1e-9 * (time2 - time1)
-    open("./times.csv", "a") do file
-        print(file, "$N,$delta\n")
-    end
+#     open("./times.csv", "a") do file
+    print("$N,$delta\n")
+#     end
     final_data = collect(Iterators.flatten(chains))
-    writedlm("./data_$N.csv", final_data, ',')
+    println(final_data)
+#     writedlm("./data_$N.csv", final_data, ',')
     return
 end
 
