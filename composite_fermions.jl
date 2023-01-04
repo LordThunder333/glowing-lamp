@@ -20,6 +20,7 @@ const global n_adapts::Int64 = 256
 #     return reverse(c)
 # end
 
+### Implementation copied from source code of Polynomials.jl
 function fromroots(roots)
     n = length(roots)
     c = zeros(ComplexF64, (n + 1))
@@ -39,6 +40,8 @@ Zygote.@adjoint fromroots(roots) = fromroots(roots), c̄ -> (reduce(hcat, [-1 .*
 #     order > length(coeffs) - 1 && return zero(T)
 #     return evalpoly(z, [reduce(*, (i-order):i-1, init=coeffs[i]) for i in eachindex(coeffs)])
 # end
+
+### Implementation copied from source code of Polynomials.jl
 function derivative(z, coeffs, order)
     order == 0 && return evalpoly(z, coeffs)
     order > length(coeffs) - 1 && return zero(ComplexF64)
@@ -135,12 +138,12 @@ function cf_sampler(N::Int64)
     end
     time2 = time_ns()
     delta = 1e-9 * (time2 - time1)
-#     open("./times.csv", "a") do file
-    print("$N,$delta\n")
-#     end
+    open("./times.csv", "a") do file
+    	print(file, "$N,$delta\n")
+    end
     final_data = collect(Iterators.flatten(chains))
-    println(final_data)
-#     writedlm("./data_$N.csv", final_data, ',')
+#     println(final_data)
+    writedlm("./data_$N.csv", final_data, ',')
     return
 end
 
